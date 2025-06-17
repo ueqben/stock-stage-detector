@@ -1,3 +1,5 @@
+Move app.py to root
+
 import streamlit as st
 import yfinance as yf
 import pandas as pd
