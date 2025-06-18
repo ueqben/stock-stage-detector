@@ -27,51 +27,19 @@ else:
     latest = data.iloc[-1]
     past = data.iloc[-4] if len(data) >= 4 else latest
 
-    short_mas = [latest['MA_5'], latest['MA_8'], latest['MA_13']]
-    long_mas = [latest['MA_50'], latest['MA_55'], latest['MA_60']]
-    short_slope = (latest[['MA_5', 'MA_8', 'MA_13']].mean() - past[['MA_5', 'MA_8', 'MA_13']].mean())
-    long_slope = (latest[['MA_50', 'MA_55', 'MA_60']].mean() - past[['MA_50', 'MA_55', 'MA_60']].mean())
+    # Convert MAs to floats
+    short_mas = [
+        float(latest['MA_5']),
+        float(latest['MA_8']),
+        float(latest['MA_13'])
+    ]
+    long_mas = [
+        float(latest['MA_50']),
+        float(latest['MA_55']),
+        float(latest['MA_60'])
+    ]
 
-    # Stage detection logic
-    def classify_stage(short_mas, long_mas, short_slope, long_slope):
-        if all(s > l for s, l in zip(short_mas, long_mas)) and short_slope > 0 and long_slope > 0:
-            return "Markup"
-        elif all(s < l for s, l in zip(short_mas, long_mas)) and short_slope < 0 and long_slope < 0:
-            return "Markdown"
-        elif abs(sum(short_mas)/3 - sum(long_mas)/3) / (sum(long_mas)/3) < 0.01 and abs(short_slope) < 0.1:
-            return "Accumulation"
-        else:
-            return "Distribution"
-
-    # Only classify if none of the moving averages are NaN
-if any(pd.isna(val) for val in short_mas + long_mas):
-    st.warning("Not enough data to compute all moving averages. Try a different stock or wait for more price history.")
-else:
-    stage = classify_stage(short_mas, long_mas, short_slope, long_slope)
-    st.subheader(f"Stage: {stage}")
-
-
-short_mas = [
-    float(latest['MA_5']),
-    float(latest['MA_8']),
-    float(latest['MA_13'])
-]
-long_mas = [
-    float(latest['MA_50']),
-    float(latest['MA_55']),
-    float(latest['MA_60'])
-]
-
-
-    # Plot
-    st.subheader("Stock Price and Moving Averages")
-    fig, ax = plt.subplots()
-    data['Close'].plot(ax=ax, label='Close')
-    data['MA_5'].plot(ax=ax, label='MA 5')
-    data['MA_8'].plot(ax=ax, label='MA 8')
-    data['MA_13'].plot(ax=ax, label='MA 13')
-    data['MA_50'].plot(ax=ax, label='MA 50')
-    data['MA_55'].plot(ax=ax, label='MA 55')
-    data['MA_60'].plot(ax=ax, label='MA 60')
-    ax.legend()
-    st.pyplot(fig)
+    short_slope = float(
+        latest[['MA_5', 'MA_8', 'MA_13']].mean() - past[['MA_5', 'MA_8', 'MA_13']].mean()
+    )
+    long_slope = f_
