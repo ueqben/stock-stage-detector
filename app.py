@@ -118,12 +118,12 @@ for row in summary_data:
     st.subheader("Stock Price and Moving Averages")
     fig, ax = plt.subplots()
     data['Close'].plot(ax=ax, label='Close', color='black')
-    data['MA_5'].plot(ax=ax, label='MA 5', color='#d3d3d3')       # Light gray
-    data['MA_8'].plot(ax=ax, label='MA 8', color='#a9a9a9')       # Medium gray
-    data['MA_13'].plot(ax=ax, label='MA 13', color='#808080')     # Darker gray
-    data['MA_50'].plot(ax=ax, label='MA 50', color='#505050')     # Even darker
-    data['MA_55'].plot(ax=ax, label='MA 55', color='#303030')     # Nearly black
-    data['MA_60'].plot(ax=ax, label='MA 60', color='#101010')     # Very dark gray
+    data['MA_5'].plot(ax=ax, label='MA 5', color='#cce6ff')     # Light blue
+    data['MA_8'].plot(ax=ax, label='MA 8', color='#99ccff')     # Medium-light blue
+    data['MA_13'].plot(ax=ax, label='MA 13', color='#66b2ff')   # Medium blue
+    data['MA_50'].plot(ax=ax, label='MA 50', color='#3399ff')   # Darker blue
+    data['MA_55'].plot(ax=ax, label='MA 55', color='#0073e6')   # Even darker blue
+    data['MA_60'].plot(ax=ax, label='MA 60', color='#0059b3')   # Very dark blue
     ax.legend()
     st.pyplot(fig)
 
