@@ -115,16 +115,24 @@ for row in summary_data:
     data['MA_55'] = data['Close'].rolling(window=55).mean()
     data['MA_60'] = data['Close'].rolling(window=60).mean()
 
-    st.subheader("Stock Price and Moving Averages")
-    fig, ax = plt.subplots()
-    data['Close'].plot(ax=ax, label='Close', color='black')
-    data['MA_5'].plot(ax=ax, label='MA 5', color='#cce6ff')     # Light blue
-    data['MA_8'].plot(ax=ax, label='MA 8', color='#99ccff')     # Medium-light blue
-    data['MA_13'].plot(ax=ax, label='MA 13', color='#66b2ff')   # Medium blue
-    data['MA_50'].plot(ax=ax, label='MA 50', color='#3399ff')   # Darker blue
-    data['MA_55'].plot(ax=ax, label='MA 55', color='#0073e6')   # Even darker blue
-    data['MA_60'].plot(ax=ax, label='MA 60', color='#0059b3')   # Very dark blue
-    ax.legend()
+    st.subheader("Stock Price, Moving Averages, and Volume")
+    fig, ax1 = plt.subplots()
+    ax2 = ax1.twinx()
+    
+    data['Close'].plot(ax=ax1, label='Close', color='black')
+    data['MA_5'].plot(ax=ax1, label='MA 5', color='#cce6ff')     # Light blue
+    data['MA_8'].plot(ax=ax1, label='MA 8', color='#99ccff')     # Medium-light blue
+    data['MA_13'].plot(ax=ax1, label='MA 13', color='#66b2ff')   # Medium blue
+    data['MA_50'].plot(ax=ax1, label='MA 50', color='#3399ff')   # Darker blue
+    data['MA_55'].plot(ax=ax1, label='MA 55', color='#0073e6')   # Even darker blue
+    data['MA_60'].plot(ax=ax1, label='MA 60', color='#0059b3')   # Very dark blue
+    
+    ax2.bar(data.index, data['Volume'], alpha=0.2, color='gray', label='Volume')
+
+    ax1.set_ylabel("Price")
+    ax2.set_ylabel("Volume")
+    ax1.legend(loc="upper left")
+    ax2.legend(loc="upper right")
     st.pyplot(fig)
 
 # Macro news section
