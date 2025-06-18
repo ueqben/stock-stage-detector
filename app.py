@@ -116,23 +116,22 @@ for row in summary_data:
     data['MA_60'] = data['Close'].rolling(window=60).mean()
 
     st.subheader("Stock Price, Moving Averages, and Volume")
-    fig, ax1 = plt.subplots()
-    ax2 = ax1.twinx()
-    
-    data['Close'].plot(ax=ax1, label='Close', color='black')
-    data['MA_5'].plot(ax=ax1, label='MA 5', color='#cce6ff')     # Light blue
-    data['MA_8'].plot(ax=ax1, label='MA 8', color='#99ccff')     # Medium-light blue
-    data['MA_13'].plot(ax=ax1, label='MA 13', color='#66b2ff')   # Medium blue
-    data['MA_50'].plot(ax=ax1, label='MA 50', color='#3399ff')   # Darker blue
-    data['MA_55'].plot(ax=ax1, label='MA 55', color='#0073e6')   # Even darker blue
-    data['MA_60'].plot(ax=ax1, label='MA 60', color='#0059b3')   # Very dark blue
-    
-    ax2.bar(data.index.to_pydatetime(), data['Volume'].values.astype(float), alpha=0.2, color='gray', label='Volume')
+    fig, ax = plt.subplots(figsize=(10, 5))
 
-    ax1.set_ylabel("Price")
-    ax2.set_ylabel("Volume")
-    ax1.legend(loc="upper left")
-    ax2.legend(loc="upper right")
+    # Plot volume as light gray bars in the background
+    ax.bar(data.index, data['Volume'], width=0.8, color='lightgray', label='Volume', alpha=0.3)
+
+    # Plot closing price and MAs
+    ax.plot(data.index, data['Close'], label='Close', color='black')
+    ax.plot(data.index, data['MA_5'], label='MA 5', color='#cce6ff')     # Light blue
+    ax.plot(data.index, data['MA_8'], label='MA 8', color='#99ccff')     # Medium-light blue
+    ax.plot(data.index, data['MA_13'], label='MA 13', color='#66b2ff')   # Medium blue
+    ax.plot(data.index, data['MA_50'], label='MA 50', color='#3399ff')   # Darker blue
+    ax.plot(data.index, data['MA_55'], label='MA 55', color='#0073e6')   # Even darker blue
+    ax.plot(data.index, data['MA_60'], label='MA 60', color='#0059b3')   # Very dark blue
+
+    ax.set_ylabel("Price / Volume")
+    ax.legend(loc="upper left")
     st.pyplot(fig)
 
 # Macro news section
