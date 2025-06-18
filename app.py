@@ -119,7 +119,9 @@ for row in summary_data:
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # Plot volume as light gray bars in the background
-    ax.bar(data.index, data['Volume'], width=0.8, color='lightgray', label='Volume', alpha=0.3)
+    volume = data['Volume'].fillna(0).astype(float).values
+    dates = data.index.to_pydatetime()
+    ax.bar(dates, volume, width=0.8, color='lightgray', label='Volume', alpha=0.3)
 
     # Plot closing price and MAs
     ax.plot(data.index, data['Close'], label='Close', color='black')
