@@ -2,6 +2,8 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
+import requests
+import datetime
 
 # Title
 st.title("Stock Stage Detector")
@@ -123,3 +125,25 @@ for row in summary_data:
     data['MA_60'].plot(ax=ax, label='MA 60')
     ax.legend()
     st.pyplot(fig)
+
+# Macro news section
+st.markdown("---")
+st.subheader("Recent Macro & Geopolitical Headlines")
+
+api_key = "2891f6cd3c544fb88bd05f8466ace951"
+keywords = [
+    "Federal Reserve", "interest rates", "inflation", "oil prices", "China", 
+    "geopolitical risk", "tariffs", "supply chain", "Ukraine", "Middle East"
+]
+query = " OR ".join(keywords)
+
+from_date = (datetime.datetime.now() - datetime.timedelta(days=3)).strftime('%Y-%m-%d')
+url = f"https://newsapi.org/v2/everything?q={query}&from={from_date}&sortBy=publishedAt&language=en&apiKey={api_key}"
+
+try:
+    response = requests.get(url)
+    articles = response.json().get("articles", [])[:5]
+    for article in articles:
+        st.write(f"- [{article['title']}]({article['url']})")
+except Exception as e:
+    st.error(f"Error fetching news: {e}")
