@@ -42,4 +42,38 @@ else:
     short_slope = float(
         latest[['MA_5', 'MA_8', 'MA_13']].mean() - past[['MA_5', 'MA_8', 'MA_13']].mean()
     )
-    long_slope = f_
+    long_slope = float(
+        latest[['MA_50', 'MA_55', 'MA_60']].mean() - past[['MA_50', 'MA_55', 'MA_60']].mean()
+    )
+
+    # Stage detection logic
+    def classify_stage(short_mas, long_mas, short_slope, long_slope):
+        if all(s > l for s, l in zip(short_mas, long_mas)) and short_slope > 0 and long_slope > 0:
+            return "Markup"
+        elif all(s < l for s, l in zip(short_mas, long_mas)) and short_slope < 0 and long_slope < 0:
+            return "Markdown"
+        elif abs(sum(short_mas)/3 - sum(long_mas)/3) / (sum(long_mas)/3) < 0.01 and abs(short_slope) < 0.1:
+            return "Accumulation"
+        else:
+            return "Distribution"
+
+    if any(pd.isna(val) for val in short_mas + long_mas):
+        st.warning("Not enough data to compute all moving averages. Try a different stock or wait for more price history.")
+    else:
+        stage = classify_stage(short_mas, long_mas, short_slope, long_slope)
+        st.subheader(f"Stage: {stage}")
+        st.write("Short-Term MAs:", {"MA_5": short_mas[0], "MA_8": short_mas[1], "MA_13": short_mas[2]})
+        st.write("Long-Term MAs:", {"MA_50": long_mas[0], "MA_55": long_mas[1], "MA_60": long_mas[2]})
+
+        # Plot
+        st.subheader("Stock Price and Moving Averages")
+        fig, ax = plt.subplots()
+        data['Close'].plot(ax=ax, label='Close')
+        data['MA_5'].plot(ax=ax, label='MA 5')
+        data['MA_8'].plot(ax=ax, label='MA 8')
+        data['MA_13'].plot(ax=ax, label='MA 13')
+        data['MA_50'].plot(ax=ax, label='MA 50')
+        data['MA_55'].plot(ax=ax, label='MA 55')
+        data['MA_60'].plot(ax=ax, label='MA 60')
+        ax.legend()
+        st.pyplot(fig)
