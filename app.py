@@ -51,7 +51,7 @@ else:
     st.subheader(f"Stage: {stage}")
 
 
-    short_mas = [
+short_mas = [
     float(latest['MA_5']),
     float(latest['MA_8']),
     float(latest['MA_13'])
