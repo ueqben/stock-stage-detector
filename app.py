@@ -51,8 +51,17 @@ else:
     st.subheader(f"Stage: {stage}")
 
 
-    st.write("Short-Term MAs:", {"MA_5": short_mas[0], "MA_8": short_mas[1], "MA_13": short_mas[2]})
-    st.write("Long-Term MAs:", {"MA_50": long_mas[0], "MA_55": long_mas[1], "MA_60": long_mas[2]})
+    short_mas = [
+    float(latest['MA_5']),
+    float(latest['MA_8']),
+    float(latest['MA_13'])
+]
+long_mas = [
+    float(latest['MA_50']),
+    float(latest['MA_55']),
+    float(latest['MA_60'])
+]
+
 
     # Plot
     st.subheader("Stock Price and Moving Averages")
