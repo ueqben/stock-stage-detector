@@ -117,13 +117,13 @@ for row in summary_data:
 
     st.subheader("Stock Price and Moving Averages")
     fig, ax = plt.subplots()
-    data['Close'].plot(ax=ax, label='Close')
-    data['MA_5'].plot(ax=ax, label='MA 5')
-    data['MA_8'].plot(ax=ax, label='MA 8')
-    data['MA_13'].plot(ax=ax, label='MA 13')
-    data['MA_50'].plot(ax=ax, label='MA 50')
-    data['MA_55'].plot(ax=ax, label='MA 55')
-    data['MA_60'].plot(ax=ax, label='MA 60')
+    data['Close'].plot(ax=ax, label='Close', color='black')
+    data['MA_5'].plot(ax=ax, label='MA 5', color='#d3d3d3')       # Light gray
+    data['MA_8'].plot(ax=ax, label='MA 8', color='#a9a9a9')       # Medium gray
+    data['MA_13'].plot(ax=ax, label='MA 13', color='#808080')     # Darker gray
+    data['MA_50'].plot(ax=ax, label='MA 50', color='#505050')     # Even darker
+    data['MA_55'].plot(ax=ax, label='MA 55', color='#303030')     # Nearly black
+    data['MA_60'].plot(ax=ax, label='MA 60', color='#101010')     # Very dark gray
     ax.legend()
     st.pyplot(fig)
 
@@ -132,14 +132,10 @@ st.markdown("---")
 st.subheader("Macro & Geopolitical News by Ticker")
 
 api_key = "2891f6cd3c544fb88bd05f8466ace951"
-keywords = [
-    "Federal Reserve", "interest rates", "inflation", "oil prices", "China", 
-    "geopolitical risk", "tariffs", "supply chain", "Ukraine", "Middle East"
-]
 from_date = (datetime.datetime.now() - datetime.timedelta(days=3)).strftime('%Y-%m-%d')
 
 for ticker in tickers:
-    query = f"{ticker} OR {' OR '.join(keywords)}"
+    query = ticker
     url = f"https://newsapi.org/v2/everything?q={query}&from={from_date}&sortBy=publishedAt&language=en&apiKey={api_key}"
 
     st.markdown(f"### {ticker} News & Sentiment")
