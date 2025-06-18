@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 import datetime
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 
 # Title
 st.title("Stock Stage Detector")
@@ -15,7 +15,6 @@ tickers = [t.strip().upper() for t in ticker_input.split(",") if t.strip()]
 
 # Store results for summary
 summary_data = []
-translator = Translator()
 
 # Enhanced stage classification function
 def classify_stage_v2(short_mas, long_mas, short_slope, long_slope):
@@ -158,11 +157,10 @@ for ticker in tickers:
 
         for article in articles:
             title = article["title"]
-            if article["language"] != "en":
-                try:
-                    title = translator.translate(title, dest='en').text
-                except:
-                    pass
+            try:
+                title = GoogleTranslator(source='auto', target='en').translate(title)
+            except:
+                pass
             st.write(f"- [{title}]({article['url']})")
             lower_title = title.lower()
             if any(word in lower_title for word in positive_keywords):
