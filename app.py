@@ -115,24 +115,16 @@ for row in summary_data:
     data['MA_55'] = data['Close'].rolling(window=55).mean()
     data['MA_60'] = data['Close'].rolling(window=60).mean()
 
-    st.subheader("Stock Price, Moving Averages, and Volume")
+    st.subheader("Stock Price and Moving Averages")
     fig, ax = plt.subplots(figsize=(10, 5))
-
-    # Plot volume as light gray bars in the background
-    volume = data['Volume'].fillna(0).astype(float).values
-    dates = data.index.to_pydatetime()
-    ax.bar(dates, volume, width=0.8, color='lightgray', label='Volume', alpha=0.3)
-
-    # Plot closing price and MAs
     ax.plot(data.index, data['Close'], label='Close', color='black')
-    ax.plot(data.index, data['MA_5'], label='MA 5', color='#cce6ff')     # Light blue
-    ax.plot(data.index, data['MA_8'], label='MA 8', color='#99ccff')     # Medium-light blue
-    ax.plot(data.index, data['MA_13'], label='MA 13', color='#66b2ff')   # Medium blue
-    ax.plot(data.index, data['MA_50'], label='MA 50', color='#3399ff')   # Darker blue
-    ax.plot(data.index, data['MA_55'], label='MA 55', color='#0073e6')   # Even darker blue
-    ax.plot(data.index, data['MA_60'], label='MA 60', color='#0059b3')   # Very dark blue
-
-    ax.set_ylabel("Price / Volume")
+    ax.plot(data.index, data['MA_5'], label='MA 5', color='#cce6ff')
+    ax.plot(data.index, data['MA_8'], label='MA 8', color='#99ccff')
+    ax.plot(data.index, data['MA_13'], label='MA 13', color='#66b2ff')
+    ax.plot(data.index, data['MA_50'], label='MA 50', color='#3399ff')
+    ax.plot(data.index, data['MA_55'], label='MA 55', color='#0073e6')
+    ax.plot(data.index, data['MA_60'], label='MA 60', color='#0059b3')
+    ax.set_ylabel("Price")
     ax.legend(loc="upper left")
     st.pyplot(fig)
 
