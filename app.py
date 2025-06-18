@@ -112,4 +112,14 @@ for row in summary_data:
     data['MA_55'] = data['Close'].rolling(window=55).mean()
     data['MA_60'] = data['Close'].rolling(window=60).mean()
 
-    st.subheader("Stock Price and Moving Averag
+    st.subheader("Stock Price and Moving Averages")
+    fig, ax = plt.subplots()
+    data['Close'].plot(ax=ax, label='Close')
+    data['MA_5'].plot(ax=ax, label='MA 5')
+    data['MA_8'].plot(ax=ax, label='MA 8')
+    data['MA_13'].plot(ax=ax, label='MA 13')
+    data['MA_50'].plot(ax=ax, label='MA 50')
+    data['MA_55'].plot(ax=ax, label='MA 55')
+    data['MA_60'].plot(ax=ax, label='MA 60')
+    ax.legend()
+    st.pyplot(fig)
