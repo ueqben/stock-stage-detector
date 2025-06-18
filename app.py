@@ -43,10 +43,13 @@ else:
         else:
             return "Distribution"
 
+    # Only classify if none of the moving averages are NaN
+if any(pd.isna(short_mas + long_mas)):
+    st.warning("Not enough data to compute all moving averages. Try a different stock or wait for more price history.")
+else:
     stage = classify_stage(short_mas, long_mas, short_slope, long_slope)
-
-    # Display results
     st.subheader(f"Stage: {stage}")
+
     st.write("Short-Term MAs:", {"MA_5": short_mas[0], "MA_8": short_mas[1], "MA_13": short_mas[2]})
     st.write("Long-Term MAs:", {"MA_50": long_mas[0], "MA_55": long_mas[1], "MA_60": long_mas[2]})
 
