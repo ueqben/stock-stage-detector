@@ -128,22 +128,50 @@ for row in summary_data:
 
 # Macro news section
 st.markdown("---")
-st.subheader("Recent Macro & Geopolitical Headlines")
+st.subheader("Macro & Geopolitical News by Ticker")
 
 api_key = "2891f6cd3c544fb88bd05f8466ace951"
 keywords = [
     "Federal Reserve", "interest rates", "inflation", "oil prices", "China", 
     "geopolitical risk", "tariffs", "supply chain", "Ukraine", "Middle East"
 ]
-query = " OR ".join(keywords)
-
 from_date = (datetime.datetime.now() - datetime.timedelta(days=3)).strftime('%Y-%m-%d')
-url = f"https://newsapi.org/v2/everything?q={query}&from={from_date}&sortBy=publishedAt&language=en&apiKey={api_key}"
 
-try:
-    response = requests.get(url)
-    articles = response.json().get("articles", [])[:5]
-    for article in articles:
-        st.write(f"- [{article['title']}]({article['url']})")
-except Exception as e:
-    st.error(f"Error fetching news: {e}")
+for ticker in tickers:
+    query = f"{ticker} OR {' OR '.join(keywords)}"
+    url = f"https://newsapi.org/v2/everything?q={query}&from={from_date}&sortBy=publishedAt&language=en&apiKey={api_key}"
+
+    st.markdown(f"### {ticker} News & Sentiment")
+    try:
+        response = requests.get(url)
+        articles = response.json().get("articles", [])[:5]
+
+        if not articles:
+            st.write("No relevant news found.")
+            continue
+
+        positive_keywords = ["growth", "beat", "recovery", "optimism", "rally"]
+        negative_keywords = ["recession", "crisis", "tensions", "decline", "cut"]
+        score = 0
+
+        for article in articles:
+            title = article["title"]
+            st.write(f"- [{title}]({article['url']})")
+            lower_title = title.lower()
+            if any(word in lower_title for word in positive_keywords):
+                score += 1
+            elif any(word in lower_title for word in negative_keywords):
+                score -= 1
+
+        # Interpret sentiment score
+        if score >= 2:
+            sentiment = "🟢 Positive sentiment"
+        elif score <= -2:
+            sentiment = "🔴 Negative sentiment"
+        else:
+            sentiment = "🟠 Mixed or unclear sentiment"
+
+        st.markdown(f"**Sentiment summary**: {sentiment}")
+
+    except Exception as e:
+        st.error(f"Error fetching news for {ticker}: {e}")
