@@ -127,7 +127,7 @@ for row in summary_data:
     data['MA_55'].plot(ax=ax1, label='MA 55', color='#0073e6')   # Even darker blue
     data['MA_60'].plot(ax=ax1, label='MA 60', color='#0059b3')   # Very dark blue
     
-    ax2.bar(data.index.to_pydatetime(), data['Volume'].values, alpha=0.2, color='gray', label='Volume')
+    ax2.bar(data.index.to_list(), data['Volume'].astype(float).to_list(), alpha=0.2, color='gray', label='Volume')
 
     ax1.set_ylabel("Price")
     ax2.set_ylabel("Volume")
