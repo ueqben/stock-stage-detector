@@ -44,7 +44,8 @@ else:
             return "Distribution"
 
     # Only classify if none of the moving averages are NaN
-if any(pd.isna(short_mas + long_mas)):
+if any(pd.isna(short_mas)) or any(pd.isna(long_mas)):
+
     st.warning("Not enough data to compute all moving averages. Try a different stock or wait for more price history.")
 else:
     stage = classify_stage(short_mas, long_mas, short_slope, long_slope)
